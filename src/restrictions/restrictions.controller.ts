@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
 import { RestrictionsService } from './restrictions.service';
 import { CreateRestrictionDto } from './dto/create-restriction.dto';
 
@@ -22,7 +22,7 @@ export class RestrictionsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.restrictionsService.remove(+id);
+  remove(@Param('id', ParseUUIDPipe) id: string) {
+    return this.restrictionsService.remove(id);
   }
 }
