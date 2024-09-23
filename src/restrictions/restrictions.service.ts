@@ -12,9 +12,10 @@ export class RestrictionsService {
     private firestore: Firestore,
   ) {}
 
-  async addRestriction(createRestrictionDto: CreateRestrictionDto) {
+  async addRestriction(createRestrictionDto: CreateRestrictionDto, studentId: string) {
     const restriction: Restriction = {
       id: uuid(),
+      studentId: studentId,
       ...createRestrictionDto,
       createdAt: new Date(),
     };
@@ -30,12 +31,26 @@ export class RestrictionsService {
     
   }
 
-  findAll() {
-    return `This action returns all restrictions`;
+  async findAllRestrictions(studentId: string) {
+    const restrictions = await this.firestore.collection('restrictions').where('studentId', '==', studentId).get();
+    return restrictions.docs.map(doc => {
+      const data = doc.data();
+      const restriction: Restriction = {
+        id: doc.id,
+        studentId: data.studentId,
+        description: data.description,
+        createdAt: data.createdAt.toDate(),
+      };
+      return restriction;
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} restriction`;
+  async checkRestrictions(studentId: string) {
+    const restrictions = await this.firestore.collection('restrictions').where('studentId', '==', studentId).get();
+    if(restrictions.empty) {
+      return { hasRestrictions: false };
+    }
+    return { hasRestrictions: true };
   }
 
   async remove(id: string) {
