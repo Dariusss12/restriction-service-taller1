@@ -29,7 +29,6 @@ export class RestrictionsController {
     @Param('id', ParseUUIDPipe) id: string,
     @Param('studentId', ParseUUIDPipe) studentId: string
   ) {
-    console.log(studentId);
     return this.restrictionsService.remove(id, studentId);
   }
 }
