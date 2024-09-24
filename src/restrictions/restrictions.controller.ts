@@ -6,7 +6,7 @@ import { CreateRestrictionDto } from './dto/create-restriction.dto';
 export class RestrictionsController {
   constructor(private readonly restrictionsService: RestrictionsService) {}
 
-  @Post('students/:studentId/restrictions/add')
+  @Post(':studentId/add')
   create(
     @Param('studentId', ParseUUIDPipe) studentId: string,
     @Body() createRestrictionDto: CreateRestrictionDto
@@ -14,22 +14,22 @@ export class RestrictionsController {
     return this.restrictionsService.addRestriction(createRestrictionDto, studentId);
   }
 
-  @Get('students/:studentId/restrictions')
+  @Get(':studentId')
   findAll(@Param('studentId', ParseUUIDPipe) studentId: string) {
     return this.restrictionsService.findAllRestrictions(studentId);
   }
 
-  @Get('students/:studentId/check-restrictions')
+  @Get(':studentId/check-restrictions')
   check(@Param('studentId') studentId: string) {
     return this.restrictionsService.checkRestrictions(studentId);
   }
 
-  @Delete('students/:studentId/restrictions/:id')
+  @Delete(':studentId/restrictions/:id')
   remove(
     @Param('id', ParseUUIDPipe) id: string,
     @Param('studentId', ParseUUIDPipe) studentId: string
   ) {
     console.log(studentId);
-    return this.restrictionsService.remove(id);
+    return this.restrictionsService.remove(id, studentId);
   }
 }

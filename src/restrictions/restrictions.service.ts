@@ -53,7 +53,7 @@ export class RestrictionsService {
     return { hasRestrictions: true };
   }
 
-  async remove(id: string) {
+  async remove(id: string, studentId: string) {
     const restrictionRef = this.firestore.collection('restrictions').doc(id);
     const restriction = await restrictionRef.get();
 
@@ -62,6 +62,9 @@ export class RestrictionsService {
     }
 
     await restrictionRef.delete();
-    return { message: 'Restriction deleted' };
+    return { 
+      message: 'Restriction deleted',
+      studentId: studentId
+     };
   }
 }
